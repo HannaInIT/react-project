@@ -2,7 +2,7 @@
 // shows detailed info: multiple images, description, reviews, specifications
 
 import { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { useParams } from "react-router";
 import { getDiscountPrice } from "../utils/price";
 
 export default function ProductDetail() {
@@ -10,12 +10,6 @@ export default function ProductDetail() {
   const [product, setProduct] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-
-  // const getDiscountPrice = (price, discountPercentage) => {
-  //   if (!discountPercentage) return price.toFixed(2);
-  //   const discounted = price * (1 - discountPercentage / 100);
-  //   return discounted.toFixed(2);
-  // };
 
   useEffect(() => {
     const fetchProduct = async () => {

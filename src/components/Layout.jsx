@@ -3,18 +3,15 @@ import Header from "./Header";
 import Footer from "./Footer";
 
 export default function Layout() {
-  return(
+  return (
     <div className="page-wrapper">
       <Header />
       <main className="page-content">
         <div className="content-container">
           <Outlet />
-          </div>
+        </div>
       </main>
-      {/* <div className="content-container"> */}
-        <Footer />
-        {/* </div> */}
-
+      <Footer />
     </div>
-  )
+  );
 }

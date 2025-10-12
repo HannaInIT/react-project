@@ -81,9 +81,9 @@ export default function Home() {
             <h3>Beauty</h3>
           </Link>
 
-          <Link to="/skin-care" className="category-card">
-            <img src="/assets/skin-care.jpg" alt="skin care" />
-            <h3>Skin care</h3>
+          <Link to="/bags" className="category-card">
+            <img src="/assets/womens-bags.jpg" alt="womens bags" />
+            <h3>Womens bags</h3>
           </Link>
 
           <Link to="/fragrances" className="category-card">

@@ -13,23 +13,40 @@ export default function Home() {
       setError(null);
 
       try {
-        const categories = ["beauty", "womens-dresses", "fragrances", "womens-bags"];
+        const categories = [
+          "beauty",
+          "womens-dresses",
+          "fragrances",
+          "womens-bags",
+        ];
         const categoryFetch = categories.map((category) =>
-          fetch(
-            `https://dummyjson.com/products/category/${category}?limit=10`
-          ).then((res) => res.json())
+          fetch(`https://dummyjson.com/products/category/${category}`).then(
+            (res) => res.json()
+          )
         );
         const categoryResults = await Promise.all(categoryFetch);
 
-        // combine products from 4 categories
-        const allProducts = categoryResults.flatMap(
-          (result) => result.products
+        // get best price from each category
+        const bestPriceFromEchCategory = categoryResults.map(
+          (result) => {
+            const categoryProducts = result.products;
+
+            // sort by the best price in this category
+            const sortedByPrice = categoryProducts.sort((a, b) => {
+              const priceA = a.discountPercentage
+                ? a.price * (1 - a.discountPercentage / 100)
+                : a.price;
+              const priceB = b.discountPercentage
+                ? b.price * (1 - b.discountPercentage / 100)
+                : b.price;
+              return priceA - priceB;
+            });
+
+            return sortedByPrice[0];
+          }
         );
 
-        // random shuffle and select 4
-        const shuffled = allProducts.sort(() => 0.5 - Math.random());
-        const randomProducts = shuffled.slice(0, 4);
-        setProducts(randomProducts);
+        setProducts(bestPriceFromEchCategory);
       } catch (err) {
         setError(`Failed to load product: ${err.message}`);
       } finally {

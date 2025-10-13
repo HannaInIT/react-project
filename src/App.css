@@ -278,6 +278,37 @@ header {
   background-color: #ec9797;
 }
 
+/* Add to cart button states */
+.product-card_add-to-cart {
+  width: 100%;
+
+  background-color: #313237;
+  color: white;
+  font-size: 14px;
+  border: none;
+  border-radius: 3px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  padding: 10px 45px;
+  margin-top: auto;
+  /* background-color: red; */
+}
+
+.product-card_add-to-cart:hover:not(:disabled) {
+  transform: scale(1.02);
+}
+.product-card_add-to-cart:active:not(:disabled) {
+  transform: scale(0.97);
+}
+
+.product-card_add-to-cart--added {
+  color: #27ae60;
+  background-color: transparent;
+  pointer-events: none;
+  border: 1px solid #e2e6e9;
+}
+
 /*--------------- categories ---------------*/
 .top-categories {
   margin: 40px 0;

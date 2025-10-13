@@ -1,10 +1,37 @@
 // product card component - is a small preview of a product,
-//   used in lists / grids(like on Home page, category pages)
+// used in lists / grids(like on Home page, category pages)
 
 import { Link } from "react-router";
 import { getDiscountPrice } from "../utils/price";
+import { useCart } from "../context/CartContext";
+// import { useState } from "react";
 
 export default function ProductCard({ product }) {
+  const { cartItems, addItemToCart } = useCart();
+  // const [isAdding, setIsAdding] = useState(false);
+
+  const isProductInCart = cartItems.some(
+    (item) => item.product.id === product.id
+  );
+
+  const handleAddToCart = (e) => {
+    e.preventDefault();
+    e.stopPropagation();
+
+    if (isProductInCart) {
+      return; //don't add to the cart if it's already there
+    }
+    addItemToCart(product);
+
+    // setIsAdding(true);
+    // addItemToCart(product);
+
+    // // reset button state after animation
+    // setTimeout(() => {
+    //   setIsAdding(false);
+    // }, 1000);
+  };
+
   return (
     <div className="product-card">
       <Link to={`/product/${product.id}`} className="product-card_link">
@@ -43,8 +70,16 @@ export default function ProductCard({ product }) {
           )}
         </div>
 
-        {/* add to cart button */}
-        <button className="product-card_add-to-cart">Add to cart</button>
+        {/* add to cart button with dynamic state*/}
+        <button
+          onClick={handleAddToCart}
+          className={`product-card_add-to-cart ${
+            isProductInCart ? "product-card_add-to-cart--added" : ""
+          }`}
+          disabled={isProductInCart}
+        >
+          {isProductInCart ? "Added to cart" : "Add to cart"}
+        </button>
       </div>
     </div>
   );

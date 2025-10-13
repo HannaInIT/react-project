@@ -168,7 +168,7 @@ header {
 .nav-link {
   text-decoration: none;
   color: #333;
-  font-weight: 500;
+  font-weight: 600;
   padding: 0.5rem 1rem;
   border-radius: 4px;
   transition: background-color 0.3s;
@@ -183,6 +183,28 @@ header {
 .icon {
   width: 17px;
   height: 17px;
+}
+
+.cart-wrapper{
+  position: relative;
+}
+
+.cart-count{
+  position: absolute;
+  background-color: #EB5757;
+  top: -50%;
+  right: -50%;
+  color: white;
+  font-size: 9px;
+  font-weight: 600;
+  width: 14px;
+  height: 14px;
+  border: 1px solid #fff;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 50%;
+  min-width: 14px;
 }
 
 .action-link:hover .icon {
@@ -278,8 +300,8 @@ header {
   background-color: #ec9797;
 }
 
-/* Add to cart button states */
-.product-card_add-to-cart {
+/*--------------- add to cart buttons ---------------*/
+.add-to-cart-btn {
   width: 100%;
 
   background-color: #313237;
@@ -287,7 +309,7 @@ header {
   font-size: 14px;
   border: none;
   border-radius: 3px;
-  font-weight: 500;
+  font-weight: 600;
   cursor: pointer;
   transition: all 0.3s ease;
   padding: 10px 45px;
@@ -295,18 +317,26 @@ header {
   /* background-color: red; */
 }
 
-.product-card_add-to-cart:hover:not(:disabled) {
+.add-to-cart-btn:hover:not(:disabled) {
   transform: scale(1.02);
 }
-.product-card_add-to-cart:active:not(:disabled) {
+.add-to-cart-btn:active:not(:disabled) {
   transform: scale(0.97);
 }
 
-.product-card_add-to-cart--added {
+.add-to-cart-btn--added{
   color: #27ae60;
   background-color: transparent;
   pointer-events: none;
   border: 1px solid #e2e6e9;
+}
+
+/* larger version for ProductDetail page */
+.add-to-cart-btn--large{
+  font-size: 14px;
+  font-weight: 600;
+  padding: 14px 85px;
+  max-width: 300px;
 }
 
 /*--------------- categories ---------------*/

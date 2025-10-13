@@ -19,10 +19,6 @@ export default function Cart() {
     removeItemFromCart(id);
   };
 
-  // const handleCheckout = () => {
-  //   console.log();
-  // }
-
   if (cartItems.length === 0) {
     return (
       <div className="cart-page">

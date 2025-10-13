@@ -8,8 +8,8 @@ import { useCart } from "../context/CartContext";
 
 export default function ProductCard({ product }) {
   const { cartItems, addItemToCart } = useCart();
-  // const [isAdding, setIsAdding] = useState(false);
 
+  // if product in cart
   const isProductInCart = cartItems.some(
     (item) => item.product.id === product.id
   );
@@ -22,14 +22,6 @@ export default function ProductCard({ product }) {
       return; //don't add to the cart if it's already there
     }
     addItemToCart(product);
-
-    // setIsAdding(true);
-    // addItemToCart(product);
-
-    // // reset button state after animation
-    // setTimeout(() => {
-    //   setIsAdding(false);
-    // }, 1000);
   };
 
   return (
@@ -73,8 +65,8 @@ export default function ProductCard({ product }) {
         {/* add to cart button with dynamic state*/}
         <button
           onClick={handleAddToCart}
-          className={`product-card_add-to-cart ${
-            isProductInCart ? "product-card_add-to-cart--added" : ""
+          className={`add-to-cart-btn ${
+            isProductInCart ? "add-to-cart-btn--added" : ""
           }`}
           disabled={isProductInCart}
         >

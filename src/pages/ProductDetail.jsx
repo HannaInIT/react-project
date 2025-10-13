@@ -4,12 +4,24 @@
 import { useEffect, useState } from "react";
 import { useParams } from "react-router";
 import { getDiscountPrice } from "../utils/price";
+import { useCart } from "../context/CartContext";
 
 export default function ProductDetail() {
   const { id } = useParams();
   const [product, setProduct] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+
+  const { cartItems, addItemToCart } = useCart()
+
+  // check if product in cart
+  const isProductInCart = product ? cartItems.some(item => item.product.id === product.id) : false
+  
+  const handleAddToCart = () => {
+    if (product && !isProductInCart) {
+     addItemToCart(product)
+   }
+  }
 
   useEffect(() => {
     const fetchProduct = async () => {
@@ -33,7 +45,7 @@ export default function ProductDetail() {
   }, [id]);
 
   if (error) {
-    return <div className="error">error: {error}</div>;
+    return <div className="error">Error: {error}</div>;
   }
 
   if (loading) {
@@ -79,6 +91,8 @@ export default function ProductDetail() {
               </span>
             )}
           </div>
+
+          <button onClick={handleAddToCart} className={`add-to-cart-btn add-to-cart-btn--large ${isProductInCart ? 'add-to-cart-btn--added' : ''}`} disabled={isProductInCart}>{ isProductInCart ? 'Added to cart': 'Add to cart'}</button>
         </div>
       </div>
     </div>

@@ -1,6 +1,8 @@
 import { Link } from "react-router";
+import { useCart } from "../context/CartContext";
 
 export default function Header() {
+  const {getCartItemsCount} = useCart()
   return (
     <header className="header">
       {/* logo */}
@@ -35,9 +37,15 @@ export default function Header() {
             className="icon"
           />
         </Link>
+        <div className="cart-wrapper">
         <Link to="/cart" className="action-link">
           <img src="/assets/cart.svg" alt="cart" className="icon" />
-        </Link>
+         
+          </Link>
+          {getCartItemsCount() > 0 && (
+             <span className="cart-count">{ getCartItemsCount()}</span>
+          )}
+          </div>
       </div>
     </header>
   );

@@ -185,13 +185,13 @@ header {
   height: 17px;
 }
 
-.cart-wrapper{
+.cart-wrapper {
   position: relative;
 }
 
-.cart-count{
+.cart-count {
   position: absolute;
-  background-color: #EB5757;
+  background-color: #eb5757;
   top: -50%;
   right: -50%;
   color: white;
@@ -207,10 +207,9 @@ header {
   min-width: 14px;
 }
 
-.action-link:hover .icon {
-  filter: brightness(0) saturate(100%) invert(26%) sepia(89%) saturate(1583%)
-    hue-rotate(324deg) brightness(96%) contrast(93%);
-}
+
+
+
 
 /*--------------- home banner ---------------*/
 .banner {
@@ -300,21 +299,26 @@ header {
   background-color: #ec9797;
 }
 
-/*--------------- add to cart buttons ---------------*/
+/*--------------- add to cart and favorite buttons ---------------*/
+.product-card_buttons {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+  /* margin-top: auto; */
+}
 .add-to-cart-btn {
+  flex: 1;
   width: 100%;
-
   background-color: #313237;
   color: white;
   font-size: 14px;
   border: none;
-  border-radius: 3px;
+  border-radius: 1px;
   font-weight: 600;
   cursor: pointer;
   transition: all 0.3s ease;
   padding: 10px 45px;
   margin-top: auto;
-  /* background-color: red; */
 }
 
 .add-to-cart-btn:hover:not(:disabled) {
@@ -324,20 +328,72 @@ header {
   transform: scale(0.97);
 }
 
-.add-to-cart-btn--added{
+.add-to-cart-btn--added {
   color: #27ae60;
   background-color: transparent;
   pointer-events: none;
   border: 1px solid #e2e6e9;
 }
 
+/* favorite button */
+.favorite-btn {
+  /* background-color: transparent; */
+  border: 1px solid #e2e6e9;
+  border-radius: 1px;
+  /* width: 40px; */
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  flex-shrink: 0;
+  outline: none;
+}
+
+.favorite-btn:focus:not(:focus-visible) {
+  outline: none;
+}
+
+.favorite-icon {
+  display: block;
+  width: 16px;
+  height: 16px;
+  z-index: 10;
+  color: #333333;
+}
+
 /* larger version for ProductDetail page */
-.add-to-cart-btn--large{
+.add-to-cart-btn--large {
   font-size: 14px;
   font-weight: 600;
   padding: 14px 85px;
   max-width: 300px;
 }
+
+.favorites-wrapper{
+  position: relative;
+}
+
+.favorites-count{
+position: absolute;
+background-color: #eb5757;
+top: -50%;
+right: -50%;
+color: white;
+font-size: 9px;
+font-weight: 600;
+width: 14px;
+height: 14px;
+border: 1px solid white;
+display: flex;
+justify-content: center;
+align-items: center;
+border-radius: 50%;
+min-width: 14px;
+}
+
+
 
 /*--------------- categories ---------------*/
 .top-categories {

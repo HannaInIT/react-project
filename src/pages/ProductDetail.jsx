@@ -5,6 +5,7 @@ import { useEffect, useState } from "react";
 import { useParams } from "react-router";
 import { getDiscountPrice } from "../utils/price";
 import { useCart } from "../context/CartContext";
+import { useFavorites } from "../context/FavoritesContext";
 
 export default function ProductDetail() {
   const { id } = useParams();
@@ -12,15 +13,28 @@ export default function ProductDetail() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
-  const { cartItems, addItemToCart } = useCart()
+  const { cartItems, addItemToCart } = useCart();
+  const { toggleFavorite, isFavorite } = useFavorites();
 
   // check if product in cart
-  const isProductInCart = product ? cartItems.some(item => item.product.id === product.id) : false
+  const isProductInCart = product
+    ? cartItems.some((item) => item.product.id === product.id)
+    : false;
   
+  // check if product in favorites
+  const isProductFavorite = product ? isFavorite(product.id) : false
+
+
   const handleAddToCart = () => {
     if (product && !isProductInCart) {
-     addItemToCart(product)
-   }
+      addItemToCart(product);
+    }
+  };
+
+  const handleFavorite = () => {
+    if (product) {
+      toggleFavorite(product)
+    }
   }
 
   useEffect(() => {
@@ -92,7 +106,24 @@ export default function ProductDetail() {
             )}
           </div>
 
-          <button onClick={handleAddToCart} className={`add-to-cart-btn add-to-cart-btn--large ${isProductInCart ? 'add-to-cart-btn--added' : ''}`} disabled={isProductInCart}>{ isProductInCart ? 'Added to cart': 'Add to cart'}</button>
+          {/* add to cart button and add to favorites with dynamic state */}
+          <div className="product-card_buttons product-detail_buttons">
+          <button
+            onClick={handleAddToCart}
+            className={`add-to-cart-btn add-to-cart-btn--large ${
+              isProductInCart ? "add-to-cart-btn--added" : ""
+            }`}
+            disabled={isProductInCart}
+          >
+            {isProductInCart ? "Added to cart" : "Add to cart"}
+            </button>
+
+            {/* favorites button */}
+            <button onClick={handleFavorite} className={`favorite-btn favorite-btn--large ${isProductFavorite ? 'favorite-btn--active' : ''}`} arial-label={isProductFavorite ? 'Remove from favorites' : 'Add to favorites'} >
+              <img src={isProductFavorite ? '/assets/heart-filled.svg' : '/assets/heart-outlined.svg'} alt="favorite" className="favorite-icon"/>
+
+            </button>
+            </div>
         </div>
       </div>
     </div>

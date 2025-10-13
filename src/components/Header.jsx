@@ -1,8 +1,12 @@
 import { Link } from "react-router";
 import { useCart } from "../context/CartContext";
+import { useFavorites } from "../context/FavoritesContext";
 
 export default function Header() {
-  const {getCartItemsCount} = useCart()
+  const { getCartItemsCount } = useCart();
+
+  const { getFavoritesCount } = useFavorites();
+
   return (
     <header className="header">
       {/* logo */}
@@ -29,23 +33,29 @@ export default function Header() {
       </nav>
 
       {/* user actions */}
+
       <div className="user-actions">
-        <Link to="/favorites" className="action-link">
-          <img
-            src="/assets/heart-outlined.svg"
-            alt="favorites"
-            className="icon"
-          />
-        </Link>
+        <div className="favorites-wrapper">
+          <Link to="/favorites" className="action-link">
+            <img
+              src="/assets/heart-outlined.svg"
+              alt="favorites"
+              className="icon"
+            />
+          </Link>
+          {getFavoritesCount() > 0 && (
+            <span className="favorites-count">{ getFavoritesCount()}</span>
+          )}
+        </div>
+
         <div className="cart-wrapper">
-        <Link to="/cart" className="action-link">
-          <img src="/assets/cart.svg" alt="cart" className="icon" />
-         
+          <Link to="/cart" className="action-link">
+            <img src="/assets/cart.svg" alt="cart" className="icon" />
           </Link>
           {getCartItemsCount() > 0 && (
-             <span className="cart-count">{ getCartItemsCount()}</span>
+            <span className="cart-count">{getCartItemsCount()}</span>
           )}
-          </div>
+        </div>
       </div>
     </header>
   );

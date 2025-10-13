@@ -4,15 +4,20 @@
 import { Link } from "react-router";
 import { getDiscountPrice } from "../utils/price";
 import { useCart } from "../context/CartContext";
+import { useFavorites } from "../context/FavoritesContext";
 // import { useState } from "react";
 
 export default function ProductCard({ product }) {
   const { cartItems, addItemToCart } = useCart();
+  const { toggleFavorite, isFavorite } = useFavorites();
 
   // if product in cart
   const isProductInCart = cartItems.some(
     (item) => item.product.id === product.id
   );
+
+  // if product in favorites
+  const isProductFavorite = isFavorite(product.id);
 
   const handleAddToCart = (e) => {
     e.preventDefault();
@@ -22,6 +27,12 @@ export default function ProductCard({ product }) {
       return; //don't add to the cart if it's already there
     }
     addItemToCart(product);
+  };
+
+  const handleFavorite = (e) => {
+    e.preventDefault();
+    e.stopPropagation();
+    toggleFavorite(product);
   };
 
   return (
@@ -62,16 +73,40 @@ export default function ProductCard({ product }) {
           )}
         </div>
 
-        {/* add to cart button with dynamic state*/}
-        <button
-          onClick={handleAddToCart}
-          className={`add-to-cart-btn ${
-            isProductInCart ? "add-to-cart-btn--added" : ""
-          }`}
-          disabled={isProductInCart}
-        >
-          {isProductInCart ? "Added to cart" : "Add to cart"}
-        </button>
+        {/* add to cart button and add to favorites with dynamic state*/}
+        <div className="product-card_buttons">
+          {/* add to cart */}
+          <button
+            onClick={handleAddToCart}
+            className={`add-to-cart-btn ${
+              isProductInCart ? "add-to-cart-btn--added" : ""
+            }`}
+            disabled={isProductInCart}
+          >
+            {isProductInCart ? "Added to cart" : "Add to cart"}
+          </button>
+
+          {/* favorites button */}
+          <button
+            onClick={handleFavorite}
+            className={`favorite-btn ${
+              isProductFavorite ? "favorite-btn--active" : ""
+            }`}
+            aria-label={
+              isProductFavorite ? "Remove from favorites" : "Add to favorites"
+            }
+          >
+            <img
+              src={
+                isProductFavorite
+                  ? "/assets/heart-filled.svg"
+                  : "/assets/heart-outlined.svg"
+              }
+              alt="favorite"
+              className="favorite-icon"
+            />
+          </button>
+        </div>
       </div>
     </div>
   );

@@ -5,6 +5,12 @@ import { useCallback, useEffect, useRef, useState } from "react";
 import { useProductsService } from "../services/productsService";
 import { debounce } from "../utils/debounce";
 
+//icons
+import searchIcon from "../assets/icons/search.svg";
+import closeIcon from "../assets/icons/close-or-remove.svg";
+import heartOutlinedIcon from "../assets/icons/heart-outlined.svg";
+import cartIcon from "../assets/icons/cart.svg";
+
 export default function Header() {
   const { getCartItemsCount } = useCart();
   const { getFavoritesCount } = useFavorites();
@@ -17,39 +23,30 @@ export default function Header() {
   const searchRef = useRef(null);
 
   //search function + useCallback
-  const fetchProductsOnSearch = useCallback(
-    async (searchString) => {
-      if (!searchString.trim()) {
-        setSearchResults([]);
-        setShowDropdown(false);
-        return;
-      }
+  const fetchProductsOnSearch = useCallback(async (searchString) => {
+    if (!searchString.trim()) {
+      setSearchResults([]);
+      setShowDropdown(false);
+      return;
+    }
 
-      try {
-        const products = await fetchProductsWithSearch(searchString);
+    try {
+      const products = await fetchProductsWithSearch(searchString);
 
-
-        setSearchResults(products);
-        setShowDropdown(true);
-      } catch {
-        setSearchResults([]);
-        setShowDropdown(false);
-      }
-    },
-    []
-  );
-
-  // const debouncedFetchProductsOnSearch = useCallback(
-  //   debounce(fetchProductsOnSearch, 300),
-  //   [fetchProductsOnSearch]
-  // );
+      setSearchResults(products);
+      setShowDropdown(true);
+    } catch {
+      setSearchResults([]);
+      setShowDropdown(false);
+    }
+  }, []);
 
   const debouncedFetchProductsOnSearch = useCallback(
-  debounce((searchString) => { 
-    fetchProductsOnSearch(searchString);
-  }, 300),
-  []
-);
+    debounce((searchString) => {
+      fetchProductsOnSearch(searchString);
+    }, 300),
+    []
+  );
 
   const handleProductClick = () => {
     setQuery("");
@@ -64,21 +61,12 @@ export default function Header() {
     setShowDropdown(false);
   };
 
-  //handle Enter key press
-  // const handleKeyDown = (e) => {
-  //   if (e.key === 'Enter' && query.trim()) {
-  //     e.preventDefault()
-  //     fetchProductsOnSearch(query)
-  //   }
-  // }
-
-   const handleInputFocus = () => {
-    if ( query.trim() ) {
-      // e.preventDefault()
-      setShowDropdown(true)
-      fetchProductsOnSearch(query)
+  const handleInputFocus = () => {
+    if (query.trim()) {
+      setShowDropdown(true);
+      fetchProductsOnSearch(query);
     }
-  }
+  };
 
   //close dropdown when we click outside of it
   useEffect(() => {
@@ -120,7 +108,7 @@ export default function Header() {
       {/* search */}
       <div className="search-container" ref={searchRef}>
         <div className="search-input-wrapper">
-          <img src="/assets/search.svg" alt="search" className="search-icon" />
+          <img src={searchIcon} alt="search" className="search-icon" />
           <input
             type="text"
             value={query}
@@ -128,9 +116,7 @@ export default function Header() {
               setQuery(e.target.value);
               debouncedFetchProductsOnSearch(e.target.value);
             }}
-            // onKeyDown={handleKeyDown}
             onFocus={handleInputFocus}
-            
             placeholder="Search products..."
             className="search-input"
           />
@@ -143,11 +129,7 @@ export default function Header() {
               className="search-clear-btn"
               aria-label="Clear search"
             >
-              <img
-                src="/assets/close-or-remove.svg"
-                alt="clear"
-                className="search-clear-icon"
-              />
+              <img src={closeIcon} alt="clear" className="search-clear-icon" />
             </button>
           )}
         </div>
@@ -187,11 +169,7 @@ export default function Header() {
       <div className="user-actions">
         <div className="favorites-wrapper">
           <Link to="/favorites" className="action-link">
-            <img
-              src="/assets/heart-outlined.svg"
-              alt="favorites"
-              className="icon"
-            />
+            <img src={heartOutlinedIcon} alt="favorites" className="icon" />
           </Link>
           {getFavoritesCount() > 0 && (
             <span className="favorites-count">{getFavoritesCount()}</span>
@@ -200,7 +178,7 @@ export default function Header() {
 
         <div className="cart-wrapper">
           <Link to="/cart" className="action-link">
-            <img src="/assets/cart.svg" alt="cart" className="icon" />
+            <img src={cartIcon} alt="cart" className="icon" />
           </Link>
           {getCartItemsCount() > 0 && (
             <span className="cart-count">{getCartItemsCount()}</span>

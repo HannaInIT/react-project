@@ -5,7 +5,8 @@ import { Link } from "react-router";
 import { getDiscountPrice } from "../utils/price";
 import { useCart } from "../context/CartContext";
 import { useFavorites } from "../context/FavoritesContext";
-// import { useState } from "react";
+import heartFilled from '../assets/icons/heart-filled.svg'
+import heartOutlinedIcon from "../assets/icons/heart-outlined.svg";
 
 export default function ProductCard({ product }) {
   const { cartItems, addItemToCart } = useCart();
@@ -99,8 +100,8 @@ export default function ProductCard({ product }) {
             <img
               src={
                 isProductFavorite
-                  ? "/assets/heart-filled.svg"
-                  : "/assets/heart-outlined.svg"
+                  ? heartFilled
+                  : heartOutlinedIcon
               }
               alt="favorite"
               className="favorite-icon"

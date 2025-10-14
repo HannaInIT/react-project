@@ -1,6 +1,18 @@
 import { useState, useEffect } from "react";
 import ProductCard from "../components/ProductCard";
 import { Link } from "react-router";
+import { PromoSlider } from "../components/PromoSlider";
+
+//banner images
+import bannerMain from "../assets/banners/main.png";
+import bannerBags from "../assets/banners/bags.jpg";
+import bannerMakeup from "../assets/banners/makeup.jpg";
+import bannerDresses from "../assets/banners/dresses.jpg";
+
+//categories images
+import beautyCategory from "../assets/categories/beauty.jpg";
+import bagsCategory from "../assets/categories/bags.jpg";
+import fragrancesCategory from "../assets/categories/fragrances.jpg";
 
 export default function Home() {
   const [products, setProducts] = useState([]);
@@ -27,24 +39,22 @@ export default function Home() {
         const categoryResults = await Promise.all(categoryFetch);
 
         // get best price from each category
-        const bestPriceFromEchCategory = categoryResults.map(
-          (result) => {
-            const categoryProducts = result.products;
+        const bestPriceFromEchCategory = categoryResults.map((result) => {
+          const categoryProducts = result.products;
 
-            // sort by the best price in this category
-            const sortedByPrice = categoryProducts.sort((a, b) => {
-              const priceA = a.discountPercentage
-                ? a.price * (1 - a.discountPercentage / 100)
-                : a.price;
-              const priceB = b.discountPercentage
-                ? b.price * (1 - b.discountPercentage / 100)
-                : b.price;
-              return priceA - priceB;
-            });
+          // sort by the best price in this category
+          const sortedByPrice = categoryProducts.sort((a, b) => {
+            const priceA = a.discountPercentage
+              ? a.price * (1 - a.discountPercentage / 100)
+              : a.price;
+            const priceB = b.discountPercentage
+              ? b.price * (1 - b.discountPercentage / 100)
+              : b.price;
+            return priceA - priceB;
+          });
 
-            return sortedByPrice[0];
-          }
-        );
+          return sortedByPrice[0];
+        });
 
         setProducts(bestPriceFromEchCategory);
       } catch (err) {
@@ -60,17 +70,10 @@ export default function Home() {
     <div className="home-page">
       {/* banner */}
       <section className="banner">
-        <img
-          src="/assets/banner-main.jpg"
-          alt="women things banner"
-          className="banner-image"
+        <PromoSlider
+          images={[bannerMain, bannerBags, bannerMakeup, bannerDresses]}
+          imageClassName="banner-image"
         />
-        <div className="banner-content">
-          <h1>
-            Welcome to <span>Women Things</span>
-          </h1>
-          <p>Your favorite place for beauty, style & self-care</p>
-        </div>
       </section>
 
       {/* hot prices */}
@@ -94,17 +97,17 @@ export default function Home() {
         <h2>Top categories</h2>
         <div className="categories-grid">
           <Link to="/beauty" className="category-card">
-            <img src="/assets/beauty.jpg" alt="beauty" />
+            <img src={beautyCategory} alt="beauty" />
             <h3>Beauty</h3>
           </Link>
 
           <Link to="/bags" className="category-card">
-            <img src="/assets/womens-bags.jpg" alt="womens bags" />
-            <h3>Womens bags</h3>
+            <img src={bagsCategory} alt="bags" />
+            <h3>Bags</h3>
           </Link>
 
           <Link to="/fragrances" className="category-card">
-            <img src="/assets/fragrances.jpg" alt="fragrances" />
+            <img src={fragrancesCategory} alt="fragrances" />
             <h3>Fragrances</h3>
           </Link>
         </div>

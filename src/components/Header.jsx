@@ -1,11 +1,96 @@
 import { Link } from "react-router";
 import { useCart } from "../context/CartContext";
 import { useFavorites } from "../context/FavoritesContext";
+import { useCallback, useEffect, useRef, useState } from "react";
+import { useProductsService } from "../services/productsService";
+import { debounce } from "../utils/debounce";
 
 export default function Header() {
   const { getCartItemsCount } = useCart();
-
   const { getFavoritesCount } = useFavorites();
+
+  const [query, setQuery] = useState("");
+  const [searchResults, setSearchResults] = useState([]);
+  const [showDropdown, setShowDropdown] = useState(false);
+
+  const { fetchProductsWithSearch } = useProductsService();
+  const searchRef = useRef(null);
+
+  //search function + useCallback
+  const fetchProductsOnSearch = useCallback(
+    async (searchString) => {
+      if (!searchString.trim()) {
+        setSearchResults([]);
+        setShowDropdown(false);
+        return;
+      }
+
+      try {
+        const products = await fetchProductsWithSearch(searchString);
+
+
+        setSearchResults(products);
+        setShowDropdown(true);
+      } catch {
+        setSearchResults([]);
+        setShowDropdown(false);
+      }
+    },
+    []
+  );
+
+  // const debouncedFetchProductsOnSearch = useCallback(
+  //   debounce(fetchProductsOnSearch, 300),
+  //   [fetchProductsOnSearch]
+  // );
+
+  const debouncedFetchProductsOnSearch = useCallback(
+  debounce((searchString) => { 
+    fetchProductsOnSearch(searchString);
+  }, 300),
+  []
+);
+
+  const handleProductClick = () => {
+    setQuery("");
+    setSearchResults([]);
+    setShowDropdown(false);
+  };
+
+  //clear search function
+  const handleClearSearch = () => {
+    setQuery("");
+    setSearchResults([]);
+    setShowDropdown(false);
+  };
+
+  //handle Enter key press
+  // const handleKeyDown = (e) => {
+  //   if (e.key === 'Enter' && query.trim()) {
+  //     e.preventDefault()
+  //     fetchProductsOnSearch(query)
+  //   }
+  // }
+
+   const handleInputFocus = () => {
+    if ( query.trim() ) {
+      // e.preventDefault()
+      setShowDropdown(true)
+      fetchProductsOnSearch(query)
+    }
+  }
+
+  //close dropdown when we click outside of it
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (searchRef.current && !searchRef.current.contains(event.target)) {
+        setShowDropdown(false);
+      }
+    };
+
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
+  }, []);
 
   return (
     <header className="header">
@@ -32,8 +117,73 @@ export default function Header() {
         </Link>
       </nav>
 
-      {/* user actions */}
+      {/* search */}
+      <div className="search-container" ref={searchRef}>
+        <div className="search-input-wrapper">
+          <img src="/assets/search.svg" alt="search" className="search-icon" />
+          <input
+            type="text"
+            value={query}
+            onChange={(e) => {
+              setQuery(e.target.value);
+              debouncedFetchProductsOnSearch(e.target.value);
+            }}
+            // onKeyDown={handleKeyDown}
+            onFocus={handleInputFocus}
+            
+            placeholder="Search products..."
+            className="search-input"
+          />
 
+          {/* clear button */}
+          {query && (
+            <button
+              type="button"
+              onClick={handleClearSearch}
+              className="search-clear-btn"
+              aria-label="Clear search"
+            >
+              <img
+                src="/assets/close-or-remove.svg"
+                alt="clear"
+                className="search-clear-icon"
+              />
+            </button>
+          )}
+        </div>
+
+        {/* dropdown */}
+        {showDropdown && (
+          <div className="search-dropdown">
+            {searchResults.length > 0 ? (
+              searchResults.map((product) => (
+                <Link
+                  key={product.id}
+                  to={`/product/${product.id}`}
+                  className="search-dropdown-item"
+                  onClick={handleProductClick}
+                >
+                  <img
+                    src={product.thumbnail || product.images?.[0]}
+                    alt={product.title}
+                    className="search-item-image"
+                  />
+                  <div className="search-item-info">
+                    <span className="search-item-title">{product.title}</span>
+                    <span className="search-item-price">€{product.price}</span>
+                  </div>
+                </Link>
+              ))
+            ) : (
+              <div className="search-dropdown-item no-results">
+                No products found
+              </div>
+            )}
+          </div>
+        )}
+      </div>
+
+      {/* user actions */}
       <div className="user-actions">
         <div className="favorites-wrapper">
           <Link to="/favorites" className="action-link">
@@ -44,7 +194,7 @@ export default function Header() {
             />
           </Link>
           {getFavoritesCount() > 0 && (
-            <span className="favorites-count">{ getFavoritesCount()}</span>
+            <span className="favorites-count">{getFavoritesCount()}</span>
           )}
         </div>
 

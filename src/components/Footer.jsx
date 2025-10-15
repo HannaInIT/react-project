@@ -1,6 +1,9 @@
 import { Link } from "react-router";
 
 export default function Footer() {
+  const handleBackToTop = () => {
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  };
   return (
     <footer className="footer">
       <div className="content-container footer-inner">
@@ -17,7 +20,13 @@ export default function Footer() {
         </div>
 
         {/* back to top button */}
-        <button>Back to top</button>
+        <button
+          type="button"
+          onClick={handleBackToTop}
+          aria-label="Back to top" className="back-btn"
+        >
+          Back to top
+        </button>
       </div>
     </footer>
   );

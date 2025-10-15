@@ -134,7 +134,7 @@ export default function Cart() {
           <div className="cart-summary-column">
             <div className="cart-summary">
               <div className="total-items">
-                Total for {getCartItemsCount}
+                Total for {getCartItemsCount} {''}
                 {getCartItemsCount === 1 ? "item" : "items"}
               </div>
 

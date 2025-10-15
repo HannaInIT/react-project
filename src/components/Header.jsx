@@ -2,11 +2,11 @@ import { Link } from "react-router";
 import { useCart } from "../context/CartContext";
 import { useFavorites } from "../context/FavoritesContext";
 import { useCallback, useEffect, useRef, useState } from "react";
-import { useProductsService } from "../services/productsService";
 import { debounce } from "../utils/debounce";
 
 //icons
 import { icons } from "../assets";
+import { getDiscountPrice } from "../utils/priceDiscount";
 
 export default function Header() {
   const { getCartItemsCount } = useCart();
@@ -16,8 +16,14 @@ export default function Header() {
   const [searchResults, setSearchResults] = useState([]);
   const [showDropdown, setShowDropdown] = useState(false);
 
-  const { fetchProductsWithSearch } = useProductsService();
   const searchRef = useRef(null);
+
+  const allowedCategories = [
+    "beauty",
+    "womens-dresses",
+    "fragrances",
+    "womens-bags",
+  ];
 
   //search function + useCallback
   const fetchProductsOnSearch = useCallback(async (searchString) => {
@@ -28,9 +34,20 @@ export default function Header() {
     }
 
     try {
-      const products = await fetchProductsWithSearch(searchString);
+      const response = await fetch(
+        `https://dummyjson.com/products/search?q=${searchString}`
+      );
 
-      setSearchResults(products);
+      if (!response.ok) {
+        throw new Error(`HTTP error: ${response.status}`);
+      }
+
+      const data = await response.json();
+      const filtered = data.products.filter((product) =>
+        allowedCategories.includes(product.category)
+      );
+
+      setSearchResults(filtered);
       setShowDropdown(true);
     } catch {
       setSearchResults([]);
@@ -153,7 +170,19 @@ export default function Header() {
                   />
                   <div className="search-item-info">
                     <span className="search-item-title">{product.title}</span>
-                    <span className="search-item-price">€{product.price}</span>
+                    <div className="search-item-price-wrapper">
+                      {product.discountPercentage ? (
+                        <>
+                          <span className="search-item-price-old">€{product.price.toFixed(2)}</span>
+                          <span className="search-item-price"> €{getDiscountPrice(product.price, product.discountPercentage)}</span>
+                         
+                        </>
+                      )
+                        : (
+                        <span className="search-item-price">€{product.price.toFixed(2)}</span>  
+                    )}
+                      
+                      </div>
                   </div>
                 </Link>
               ))

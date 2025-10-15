@@ -126,7 +126,7 @@ export default function ProductDetail() {
               className={`favorite-btn favorite-btn--large ${
                 isProductFavorite ? "favorite-btn--active" : ""
               }`}
-              arial-label={
+              aria-label={
                 isProductFavorite ? "Remove from favorites" : "Add to favorites"
               }
             >

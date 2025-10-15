@@ -59,7 +59,7 @@ export default function Category() {
       </div>
 
       {loading && <div className="loading">Loading products...</div>}
-      {error && <div className="error">error: {error}</div>}
+      {error && <div className="error">Error: {error}</div>}
 
       {!loading && !error && (
         <div className="products-grid">

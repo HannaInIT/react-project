@@ -31,18 +31,20 @@ export default function Home() {
         const categoryResults = await Promise.all(categoryFetch);
 
         // get product with biggest discount from each category
-        const biggestDiscountFromEachCategory = categoryResults.map((result) => {
-          const categoryProducts = result.products;
+        const biggestDiscountFromEachCategory = categoryResults.map(
+          (result) => {
+            const categoryProducts = result.products;
 
-          // sort by biggest discount 
-          const sortedByDiscount = categoryProducts.sort((a, b) => {
-           const discountA = a.discountPercentage || 0
-           const discountB = b.discountPercentage || 0
-           return discountB - discountA
-         })
+            // sort by biggest discount
+            const sortedByDiscount = categoryProducts.sort((a, b) => {
+              const discountA = a.discountPercentage || 0;
+              const discountB = b.discountPercentage || 0;
+              return discountB - discountA;
+            });
 
-          return sortedByDiscount[0];
-        });
+            return sortedByDiscount[0];
+          }
+        );
 
         setProducts(biggestDiscountFromEachCategory);
       } catch (err) {

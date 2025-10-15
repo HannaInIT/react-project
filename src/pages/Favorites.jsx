@@ -25,7 +25,7 @@ export default function Favorites() {
           {favorites.length === 1 ? "item" : "items"} in your favorites
         </p>
 
-        <div className="favorites-grid">
+        <div className="products-grid">
           {favorites.map((product) => (
             <ProductCard key={product.id} product={product} />
           ))}

@@ -30,25 +30,21 @@ export default function Home() {
         );
         const categoryResults = await Promise.all(categoryFetch);
 
-        // get best price from each category
-        const bestPriceFromEchCategory = categoryResults.map((result) => {
+        // get product with biggest discount from each category
+        const biggestDiscountFromEachCategory = categoryResults.map((result) => {
           const categoryProducts = result.products;
 
-          // sort by the best price in this category
-          const sortedByPrice = categoryProducts.sort((a, b) => {
-            const priceA = a.discountPercentage
-              ? a.price * (1 - a.discountPercentage / 100)
-              : a.price;
-            const priceB = b.discountPercentage
-              ? b.price * (1 - b.discountPercentage / 100)
-              : b.price;
-            return priceA - priceB;
-          });
+          // sort by biggest discount 
+          const sortedByDiscount = categoryProducts.sort((a, b) => {
+           const discountA = a.discountPercentage || 0
+           const discountB = b.discountPercentage || 0
+           return discountB - discountA
+         })
 
-          return sortedByPrice[0];
+          return sortedByDiscount[0];
         });
 
-        setProducts(bestPriceFromEchCategory);
+        setProducts(biggestDiscountFromEachCategory);
       } catch (err) {
         setError(`Failed to load product: ${err.message}`);
       } finally {

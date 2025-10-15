@@ -6,10 +6,7 @@ import { useProductsService } from "../services/productsService";
 import { debounce } from "../utils/debounce";
 
 //icons
-import searchIcon from "../assets/icons/search.svg";
-import closeIcon from "../assets/icons/close-or-remove.svg";
-import heartOutlinedIcon from "../assets/icons/heart-outlined.svg";
-import cartIcon from "../assets/icons/cart.svg";
+import { icons } from "../assets";
 
 export default function Header() {
   const { getCartItemsCount } = useCart();
@@ -108,7 +105,7 @@ export default function Header() {
       {/* search */}
       <div className="search-container" ref={searchRef}>
         <div className="search-input-wrapper">
-          <img src={searchIcon} alt="search" className="search-icon" />
+          <img src={icons.search} alt="search" className="search-icon" />
           <input
             type="text"
             value={query}
@@ -129,7 +126,11 @@ export default function Header() {
               className="search-clear-btn"
               aria-label="Clear search"
             >
-              <img src={closeIcon} alt="clear" className="search-clear-icon" />
+              <img
+                src={icons.close}
+                alt="clear"
+                className="search-clear-icon"
+              />
             </button>
           )}
         </div>
@@ -169,7 +170,7 @@ export default function Header() {
       <div className="user-actions">
         <div className="favorites-wrapper">
           <Link to="/favorites" className="action-link">
-            <img src={heartOutlinedIcon} alt="favorites" className="icon" />
+            <img src={icons.heartOutlined} alt="favorites" className="icon" />
           </Link>
           {getFavoritesCount() > 0 && (
             <span className="favorites-count">{getFavoritesCount()}</span>
@@ -178,10 +179,10 @@ export default function Header() {
 
         <div className="cart-wrapper">
           <Link to="/cart" className="action-link">
-            <img src={cartIcon} alt="cart" className="icon" />
+            <img src={icons.cart} alt="cart" className="icon" />
           </Link>
-          {getCartItemsCount() > 0 && (
-            <span className="cart-count">{getCartItemsCount()}</span>
+          {getCartItemsCount > 0 && (
+            <span className="cart-count">{getCartItemsCount}</span>
           )}
         </div>
       </div>

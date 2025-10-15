@@ -13,16 +13,15 @@ export const PromoSlider = ({ images, imageClassName }) => {
   };
 
   return (
-    // <Slider {...settings}>
-    //   {images.map((image) => (
-    //     <img src={image} alt="promo-image" />
-    //   ))}
-    // </Slider>
     <Slider {...settings}>
       {images.map((image, index) => (
         <div key={index}>
-          <img src={image} alt={`promo slide ${index + 1}`} className={imageClassName}/>
-          </div>
+          <img
+            src={image}
+            alt={`promo slide ${index + 1}`}
+            className={imageClassName}
+          />
+        </div>
       ))}
     </Slider>
   );

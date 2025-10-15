@@ -2,11 +2,11 @@
 // used in lists / grids(like on Home page, category pages)
 
 import { Link } from "react-router";
-import { getDiscountPrice } from "../utils/price";
+import { getDiscountPrice } from "../utils/priceDiscount";
 import { useCart } from "../context/CartContext";
 import { useFavorites } from "../context/FavoritesContext";
-import heartFilled from '../assets/icons/heart-filled.svg'
-import heartOutlinedIcon from "../assets/icons/heart-outlined.svg";
+//icons
+import { icons } from "../assets";
 
 export default function ProductCard({ product }) {
   const { cartItems, addItemToCart } = useCart();
@@ -98,11 +98,7 @@ export default function ProductCard({ product }) {
             }
           >
             <img
-              src={
-                isProductFavorite
-                  ? heartFilled
-                  : heartOutlinedIcon
-              }
+              src={isProductFavorite ? icons.heartFilled : icons.heartOutlined}
               alt="favorite"
               className="favorite-icon"
             />

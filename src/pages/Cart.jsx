@@ -1,4 +1,6 @@
 import { useCart } from "../context/CartContext";
+import { icons } from "../assets";
+import { getDiscountPrice } from "../utils/priceDiscount";
 
 export default function Cart() {
   const {
@@ -36,81 +38,117 @@ export default function Cart() {
         {/* cart title */}
         <h2 className="cart-title">Cart</h2>
 
-        {/* cart items */}
-        <div className="cart-items">
-          {cartItems.map((item) => (
-            <div key={item.product.id} className="cart-item">
-              {/* remove icon */}
-              <button
-                onClick={() => handleRemoveItem(item.product.id)}
-                className="cart-item_remove"
-                aria-label="remove item from cart"
-              >
-                <img
-                  src="/assets/close-or-remove.svg"
-                  alt="remove"
-                  className="remove-icon"
-                />
-              </button>
+        {/* 2 column layout */}
+        <div className="cart-content">
+          {/* products */}
+          <div className="cart-item-column">
+            <div className="cart-items">
+              {cartItems.map((item) => (
+                <div key={item.product.id} className="cart-item">
+                  {/* remove icon */}
+                  <button
+                    onClick={() => handleRemoveItem(item.product.id)}
+                    className="cart-item_remove"
+                    aria-label="remove item from cart"
+                  >
+                    <img
+                      src={icons.close}
+                      alt="remove"
+                      className="remove-icon"
+                    />
+                  </button>
 
-              {/* product-image */}
-              <div className="cart-item_image">
-                <img
-                  src={item.product.thumbnail || item.product.images?.[0]}
-                  alt={item.product.title}
-                />
-              </div>
+                  {/* product-image */}
+                  <div className="cart-item_image">
+                    <img
+                      src={item.product.thumbnail || item.product.images?.[0]}
+                      alt={item.product.title}
+                    />
+                  </div>
 
-              {/* product info */}
-              <div className="cart-item_info">
-                <h3 className="cart-item_title">{item.product.title}</h3>
-                <div className="cart-item_price">
-                  €{item.product.price.toFixed(2)}
+                  {/* product info */}
+                  <div className="cart-item_info">
+                    <h3 className="cart-item_title">{item.product.title}</h3>
+                    <div className="cart-item_price">
+                      {/* show original and discounted price */}
+                      {item.product.discountPercentage ? (
+                        <>
+                          <span className="price-original">
+                            €{item.product.price.toFixed(2)}
+                          </span>
+                          <span className="price-discounted">
+                            €
+                            {getDiscountPrice(
+                              item.product.price,
+                              item.product.discountPercentage
+                            )}
+                          </span>
+                          <span className="discount-badge">
+                            - {item.product.discountPercentage}%
+                          </span>
+                        </>
+                      ) : (
+                        <span>€{item.product.price.toFixed(2)}</span>
+                      )}
+                    </div>
+                  </div>
+
+                  {/* quantity */}
+                  <div className="cart-item_quantity">
+                    <button
+                      onClick={() =>
+                        handleQuantityChange(item.product.id, item.quantity - 1)
+                      }
+                      className="quantity-btn"
+                      disabled={item.quantity <= 1}
+                    >
+                      -
+                    </button>
+                    <span className="quantity-value">{item.quantity}</span>
+                    <button
+                      onClick={() =>
+                        handleQuantityChange(item.product.id, item.quantity + 1)
+                      }
+                      className="quantity-btn"
+                    >
+                      +
+                    </button>
+                  </div>
+
+                  {/* item total */}
+                  <div className="cart-item_total">
+                    €
+                    {(
+                      getDiscountPrice(
+                        item.product.price,
+                        item.product.discountPercentage
+                      ) * item.quantity
+                    ).toFixed(2)}
+                  </div>
                 </div>
-              </div>
-
-              {/* quantity */}
-              <div className="cart-item_quantity">
-                <button
-                  onClick={() =>
-                    handleQuantityChange(item.product.id, item.quantity - 1)
-                  }
-                  className="quantity-btn"
-                  disabled={item.quantity <= 1}
-                >
-                  -
-                </button>
-                <span className="quantity-value">{item.quantity}</span>
-                <button
-                  onClick={() =>
-                    handleQuantityChange(item.product.id, item.quantity + 1)
-                  }
-                  className="quantity-btn"
-                >
-                  +
-                </button>
-              </div>
-
-              {/* item total */}
-              <div className="cart-item_total">
-                €{(item.product.price * item.quantity).toFixed(2)}
-              </div>
+              ))}
             </div>
-          ))}
-        </div>
-
-        {/* cart summary */}
-        <div className="cart-summary">
-          <div className="cart-total">
-            <div className="total-items">
-              Total for {getCartItemsCount()}
-              {getCartItemsCount() === 1 ? "item" : "items"}
-            </div>
-            <div className="total-price">€{getCartTotal().toFixed(2)}</div>
           </div>
 
-          {/* checkout button */}
-          <button className="checkout-btn">Checkout</button>
+          {/* right column - summary */}
+          <div className="cart-summary-column">
+            <div className="cart-summary">
+              <div className="total-items">
+                Total for {getCartItemsCount}
+                {getCartItemsCount === 1 ? "item" : "items"}
+              </div>
+
+              <div className="total-price">€{getCartTotal.toFixed(2)}</div>
+
+              {/* divider */}
+              <hr className="summary-divider" />
+
+              {/* checkout button */}
+              <button className="checkout-btn">
+                Checkout
+              </button>
+            </div>
+          </div>
         </div>
       </div>
     </div>

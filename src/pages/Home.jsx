@@ -3,16 +3,8 @@ import ProductCard from "../components/ProductCard";
 import { Link } from "react-router";
 import { PromoSlider } from "../components/PromoSlider";
 
-//banner images
-import bannerMain from "../assets/banners/main.png";
-import bannerBags from "../assets/banners/bags.jpg";
-import bannerMakeup from "../assets/banners/makeup.jpg";
-import bannerDresses from "../assets/banners/dresses.jpg";
-
-//categories images
-import beautyCategory from "../assets/categories/beauty.jpg";
-import bagsCategory from "../assets/categories/bags.jpg";
-import fragrancesCategory from "../assets/categories/fragrances.jpg";
+//banner and categories images
+import { banners, categories } from "../assets";
 
 export default function Home() {
   const [products, setProducts] = useState([]);
@@ -71,7 +63,7 @@ export default function Home() {
       {/* banner */}
       <section className="banner">
         <PromoSlider
-          images={[bannerMain, bannerBags, bannerMakeup, bannerDresses]}
+          images={[banners.main, banners.bags, banners.makeup, banners.dresses]}
           imageClassName="banner-image"
         />
       </section>
@@ -97,17 +89,17 @@ export default function Home() {
         <h2>Top categories</h2>
         <div className="categories-grid">
           <Link to="/beauty" className="category-card">
-            <img src={beautyCategory} alt="beauty" />
+            <img src={categories.beauty} alt="beauty" />
             <h3>Beauty</h3>
           </Link>
 
           <Link to="/bags" className="category-card">
-            <img src={bagsCategory} alt="bags" />
+            <img src={categories.bags} alt="bags" />
             <h3>Bags</h3>
           </Link>
 
           <Link to="/fragrances" className="category-card">
-            <img src={fragrancesCategory} alt="fragrances" />
+            <img src={categories.fragrances} alt="fragrances" />
             <h3>Fragrances</h3>
           </Link>
         </div>

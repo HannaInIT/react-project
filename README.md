@@ -14,7 +14,7 @@ A modern, minimalistic e-commerce web application built with React. Browse produ
 
 ## 🚀 Live Demo
 
-[View Live Demo](#) _(add deployment link here)_
+[View Live Demo](#) _(https://thriving-mermaid-aaea0e.netlify.app/)_
 
 ## 🛠️ Built With
 
